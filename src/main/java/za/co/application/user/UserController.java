@@ -76,6 +76,7 @@ public class UserController {
             user.setFollows(followedUsers);
             userList.add(user);
         }
+        System.out.println("======================================= Twitter Users ========================================");
         System.out.println(userList);
         return userList;
     }

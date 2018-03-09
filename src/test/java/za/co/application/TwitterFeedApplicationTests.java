@@ -7,9 +7,6 @@ import za.co.application.twitterfeed.FeedService;
 
 import java.io.File;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 @RunWith(SpringRunner.class)
 //@SpringBootTest
 public class TwitterFeedApplicationTests {
@@ -50,7 +47,7 @@ public class TwitterFeedApplicationTests {
 
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void tweet_filename_does_not_exist_failure() throws Exception {
 
 		ClassLoader classLoader = this.getClass().getClassLoader();

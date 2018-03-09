@@ -5,6 +5,8 @@ import za.co.application.tweet.TweetController;
 import za.co.application.user.User;
 import za.co.application.user.UserController;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -27,14 +29,13 @@ public class FeedService {
         UserController userController = new UserController();
         List<User> userList = userController.execute(Paths.get(args[Integer.parseInt(USER_FILE_NAME_ARG_INDEX.getValue())]).toFile());
 
-        TweetController tweetController = new TweetController();
-        tweetController.execute(Paths.get(args[Integer.parseInt(TWEET_FILE_NAME_ARG_INDEX.getValue())]).toFile(), userList);
+        Path path = Paths.get(args[Integer.parseInt(TWEET_FILE_NAME_ARG_INDEX.getValue())]);
+        if(Files.exists(path)) {
+            TweetController tweetController = new TweetController();
+            tweetController.execute(Paths.get(args[Integer.parseInt(TWEET_FILE_NAME_ARG_INDEX.getValue())]).toFile(), userList);
+        }
 
-        System.out.println(Validator.printErrorList());
+        Validator.printErrorList();
     }
 
-
-    /**
-     * Stream the file to handle large files efficiently.
-     */
 }

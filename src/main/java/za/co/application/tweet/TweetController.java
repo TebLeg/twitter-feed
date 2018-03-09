@@ -44,6 +44,7 @@ public class TweetController {
     private void parseAndDisplayTwitterFeed(File tweetFile, List<User> userList) throws IllegalArgumentException {
         UserComparator comparator = new UserComparator();
         Collections.sort(userList, comparator);
+        System.out.println("======================================= Twitter Feed ========================================");
 
         for (User user : userList) {
             System.out.println(user.getName());

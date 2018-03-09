@@ -32,19 +32,21 @@ public class ArgumentsValidator {
         }
         String userFileName = path1.getFileName().toString();
 
-        Path path2 = Paths.get(args[1]);
-        if(!Files.exists(path2)) {
-            System.out.println("File " + args[1] + " not found.");
-            throw new IllegalArgumentException("File " + args[1] + " not found.");
-        }
-        String tweetFileName = path2.getFileName().toString();
-
         if(!userFileName.equals(USER_FILE_NAME.getValue())) {
             throw new IllegalArgumentException("Invalid user file name: " + args[0] + ". It should be " + USER_FILE_NAME.getValue());
         }
 
-        if(!tweetFileName.equals(TWEET_FILE_NAME.getValue())) {
-            throw new IllegalArgumentException("Invalid tweet file name: " + args[0] + ". It should be " + TWEET_FILE_NAME.getValue());
+        Path path2 = Paths.get(args[1]);
+        if(!Files.exists(path2)) {
+            System.out.println("File " + args[1] + " not found.");
+            //throw new IllegalArgumentException("File " + args[1] + " not found.");
+        } else {
+            String tweetFileName = path2.getFileName().toString();
+
+            if(!tweetFileName.equals(TWEET_FILE_NAME.getValue())) {
+                throw new IllegalArgumentException("Invalid tweet file name: " + args[0] + ". It should be " + TWEET_FILE_NAME.getValue());
+            }
         }
+
     }
 }

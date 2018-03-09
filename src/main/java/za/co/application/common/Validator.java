@@ -1,8 +1,6 @@
 package za.co.application.common;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -25,12 +23,19 @@ public abstract class Validator {
         errorList.add(error);
     }
 
-    public static String printErrorList() {
-        StringBuilder sbError = new StringBuilder("Error list:");
-        sbError.append(System.getProperty("line.separator"));
-        for(String error : errorList) {
-            sbError.append(error).append(System.getProperty("line.separator"));
+    public static void printErrorList() {
+        System.out.println("=============================================================================================");
+        if(errorList.isEmpty()) {
+            System.out.println("There are no errors.");
+        } else {
+            StringBuilder sbError = new StringBuilder("Error list:");
+            sbError.append(System.getProperty("line.separator"));
+            for(String error : errorList) {
+                sbError.append(error).append(System.getProperty("line.separator"));
+            }
+            System.out.println(sbError.toString());
         }
-        return sbError.toString();
+
+        System.out.println("=============================================================================================");
     }
 }
