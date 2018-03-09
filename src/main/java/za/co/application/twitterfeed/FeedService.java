@@ -24,18 +24,20 @@ public class FeedService {
      * @throws IllegalArgumentException
      */
     public void execute(String[] args) throws IllegalArgumentException {
-        ArgumentsValidator.validate(args);
+        try {
+            ArgumentsValidator.validate(args);
 
-        UserController userController = new UserController();
-        List<User> userList = userController.execute(Paths.get(args[Integer.parseInt(USER_FILE_NAME_ARG_INDEX.getValue())]).toFile());
+            UserController userController = new UserController();
+            List<User> userList = userController.execute(Paths.get(args[Integer.parseInt(USER_FILE_NAME_ARG_INDEX.getValue())]).toFile());
 
-        Path path = Paths.get(args[Integer.parseInt(TWEET_FILE_NAME_ARG_INDEX.getValue())]);
-        if(Files.exists(path)) {
-            TweetController tweetController = new TweetController();
-            tweetController.execute(Paths.get(args[Integer.parseInt(TWEET_FILE_NAME_ARG_INDEX.getValue())]).toFile(), userList);
+            Path path = Paths.get(args[Integer.parseInt(TWEET_FILE_NAME_ARG_INDEX.getValue())]);
+            if(Files.exists(path)) {
+                TweetController tweetController = new TweetController();
+                tweetController.execute(Paths.get(args[Integer.parseInt(TWEET_FILE_NAME_ARG_INDEX.getValue())]).toFile(), userList);
+            }
+        } finally {
+            Validator.printErrorList();
         }
-
-        Validator.printErrorList();
     }
 
 }

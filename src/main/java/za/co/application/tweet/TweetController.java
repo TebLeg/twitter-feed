@@ -21,7 +21,7 @@ import static za.co.application.tweet.TweetEnum.TWITTER_FEED_USER_AT;
 public class TweetController {
 
     /**
-     *
+     * Executes the business logic by delegating.
      * @param tweetFile
      * @param userList
      * @throws IOException

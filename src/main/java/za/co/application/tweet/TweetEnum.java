@@ -1,6 +1,7 @@
 package za.co.application.tweet;
 
 /**
+ * Constants used by classes in the Tweet package.
  * Created by A100286 on 3/8/2018.
  */
 public enum TweetEnum {

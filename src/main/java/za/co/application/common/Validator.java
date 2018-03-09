@@ -12,6 +12,11 @@ public abstract class Validator {
     private static final String ASCII_PATTERN = "\\A\\p{ASCII}*\\z";
     private static Set<String> errorList = new HashSet<>();
 
+    /**
+     * Validates whether the text is in ASCII format or not.
+     * @param textLine
+     * @throws IllegalArgumentException
+     */
     public static void validateAscii(String textLine) throws IllegalArgumentException{
         if(!Pattern.matches(ASCII_PATTERN, textLine)){
             Validator.setError("Text is not in ASCII format: " + textLine + ". Line skipped.");

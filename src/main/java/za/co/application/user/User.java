@@ -1,9 +1,9 @@
 package za.co.application.user;
 
-import java.util.Comparator;
 import java.util.Set;
 
 /**
+ * The model class to store users in memory while processing.
  * Created by A100286 on 3/8/2018.
  */
 public class User {
@@ -52,9 +52,6 @@ public class User {
     public int hashCode() {
         return name.hashCode();
     }
-
-
-
 
 
     public Set<String> getFollows() {

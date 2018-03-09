@@ -1,6 +1,7 @@
 package za.co.application.twitterfeed;
 
 /**
+ * Constants used by the FeedService class.
  * Created by A100286 on 3/9/2018.
  */
 public enum FeedEnum {

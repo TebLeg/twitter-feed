@@ -18,6 +18,12 @@ public class UserController {
     private Set<String> userHashSet = new HashSet<>();
     private List<User> userList = new ArrayList<>();
 
+    /**
+     * Executes the business logic by delegating.
+     * @param userFile
+     * @return
+     * @throws IllegalArgumentException
+     */
     public List<User> execute(File userFile) throws IllegalArgumentException {
         try {
             return parseUsers(userFile);
@@ -57,7 +63,7 @@ public class UserController {
                         if(line.startsWith(userName)) {
                             String[] tokens =  line.split(USER_LINE_PATTERN.getValue());
                             try {
-                                String[] followedNames = tokens[Integer.parseInt(FOLLOWED_USERS_INDEX.getValue())].split(",");
+                                String[] followedNames = tokens[Integer.parseInt(FOLLOWED_USERS_INDEX.getValue())].split(FOLLOWED_USERS_REGEX.getValue());
                                 for (String name : followedNames) {
                                     followedUsers.add(name.trim());
                                 }

@@ -7,5 +7,4 @@ twitter-feed is a JAVA application that simulates a twitter-like feed. It accept
 The application can be installed on any OS. The files to be tested must be in the same folder or directory as the application. 
 
 # Usage
-
-java twitter-feed user.txt tweet.txt
+java -jar twitter-feed user.txt tweet.txt
