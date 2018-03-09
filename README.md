@@ -8,3 +8,6 @@ The application can be installed on any OS. When passing the arguments specify t
 
 # Usage
 Execute the command: java twitter-feed user.txt tweet.txt
+
+# Author
+Tebogo Legoabe (tebogo.legoabe@gmail.com)
