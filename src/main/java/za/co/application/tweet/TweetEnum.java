@@ -6,7 +6,7 @@ package za.co.application.tweet;
  */
 public enum TweetEnum {
 
-    TWITTER_FEED_START(">"),
+    TWITTER_FEED_START("> "),
     TWITTER_FEED_USER_AT("@"),
     TWITTER_FEED_COLON(":"),
     MAX_TWEET_CHARACTERS("120");

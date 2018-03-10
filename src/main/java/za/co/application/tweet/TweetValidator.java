@@ -21,7 +21,7 @@ public class TweetValidator extends Validator {
      * @throws IllegalArgumentException
      */
     public static void validate(String tweetLine, String name, Set<String> errorList) throws IllegalArgumentException{
-        if(Pattern.matches(TWITTER_FEED_START.getValue() + " ", tweetLine)){
+        if(!tweetLine.contains(TWITTER_FEED_START.getValue())){
             errorList.add("Invalid tweet line pattern: " + tweetLine + ". Line skipped.");
             throw new IllegalArgumentException("Invalid tweet line pattern: " + tweetLine + ". Line skipped.");
         }
