@@ -2,6 +2,7 @@ package za.co.application.tweet;
 
 import za.co.application.common.Validator;
 
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import static za.co.application.tweet.TweetEnum.MAX_TWEET_CHARACTERS;
@@ -18,16 +19,16 @@ public class TweetValidator extends Validator {
      * @param name
      * @throws IllegalArgumentException
      */
-    public static void validate(String tweetLine, String name) throws IllegalArgumentException{
+    public static void validate(String tweetLine, String name, Set<String> errorList) throws IllegalArgumentException{
         if(Pattern.matches(TWITTER_FEED_START.getValue() + " ", tweetLine)){
-            Validator.setError("Invalid tweet line pattern: " + tweetLine + ". Line skipped.");
+            errorList.add("Invalid tweet line pattern: " + tweetLine + ". Line skipped.");
         }
 
         if(tweetLine.substring((name + TWITTER_FEED_START.getValue() + " ").length()).length() > Integer.parseInt(MAX_TWEET_CHARACTERS.getValue())) {
-            Validator.setError("Invalid tweet length: " + tweetLine + ". Line skipped.");
+            errorList.add("Invalid tweet length: " + tweetLine + ". Line skipped.");
         }
 
-        validateAscii(tweetLine);
+        validateAscii(tweetLine, errorList);
 
     }
 }
