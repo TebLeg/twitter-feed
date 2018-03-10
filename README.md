@@ -29,7 +29,7 @@ The program needs to write console output as follows. For each user / follower (
     Tom
     Réal follows Alan
 ``` 
-  The the empty lines will be skipped, if there are no words after the user's name then the user follows no one but is correctly handled and any line with non ASCII charcters will also be skipped.
+The the empty lines will be skipped, if there are no words after the user's name then the user follows no one but is correctly handled and any line with non ASCII charcters will also be skipped.
 
 ## Author
 Tebogo Legoabe (tebogo.legoabe@gmail.com)
