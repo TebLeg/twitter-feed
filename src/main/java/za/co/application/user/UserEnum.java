@@ -6,7 +6,7 @@ package za.co.application.user;
  */
 
 public enum UserEnum {
-    USER_LINE_PATTERN(" follows "),
+    USER_LINE_PATTERN(" follows"),
     USER_INDEX("0"),
     FOLLOWED_USERS_INDEX("1"),
     FOLLOWED_USERS_REGEX(",");
