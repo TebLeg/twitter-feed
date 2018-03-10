@@ -9,5 +9,7 @@ The application can be installed on any OS. The files to be tested must be in th
 # Usage
 java -jar twitter-feed user.txt tweet.txt
 
+# Files and assumptions
+
 # Author
 Tebogo Legoabe (tebogo.legoabe@gmail.com)
