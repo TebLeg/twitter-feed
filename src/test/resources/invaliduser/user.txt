@@ -1,5 +1,8 @@
 Ward follows Alan
+
 Alan following Martin
+
 Ward follows Martin, Alan
+
 Joe this is wrong
-Mark
+Mark follows

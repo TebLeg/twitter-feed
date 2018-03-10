@@ -107,6 +107,7 @@ public class TwitterFeedApplicationTests {
 		service.execute(args);
 
 		String expected = "Illegal pattern in user line: Alan following Martin. Line skipped." + System.getProperty("line.separator") +
+				"Illegal pattern in user line: . Line skipped." + System.getProperty("line.separator") +
 				"Illegal pattern in user line: Joe this is wrong. Line skipped." + System.getProperty("line.separator");
 		assertEquals(expected, service.printErrorList());
 	}
@@ -122,6 +123,7 @@ public class TwitterFeedApplicationTests {
 		service.execute(args);
 
 		String expected = "Invalid tweet line pattern: Ward! There are only two hard things in Computer Science: cache invalidation, naming things and off-by-1 errors.. Line skipped." + System.getProperty("line.separator") +
+				"Invalid tweet length: Martin> This is a random long string This is a random long string This is a random long string This is a random long string This is a random long string This is a random long string This is a random long string This is a random long string This is a random long string. Max characters is 120 Line skipped." + System.getProperty("line.separator") +
 				"Invalid tweet line pattern: Alan< If you have a procedure with 10 parameters, you probably missed some.. Line skipped." + System.getProperty("line.separator") +
 				"Invalid tweet line pattern: Alan This is missing the > character after the name.. Line skipped." + System.getProperty("line.separator");
 		assertEquals(expected, service.printErrorList());

@@ -1,5 +1,6 @@
 package za.co.application.tweet;
 
+import org.springframework.util.StringUtils;
 import za.co.application.common.Validator;
 
 import java.util.Set;
@@ -22,10 +23,12 @@ public class TweetValidator extends Validator {
     public static void validate(String tweetLine, String name, Set<String> errorList) throws IllegalArgumentException{
         if(Pattern.matches(TWITTER_FEED_START.getValue() + " ", tweetLine)){
             errorList.add("Invalid tweet line pattern: " + tweetLine + ". Line skipped.");
+            throw new IllegalArgumentException("Invalid tweet line pattern: " + tweetLine + ". Line skipped.");
         }
 
-        if(tweetLine.substring((name + TWITTER_FEED_START.getValue() + " ").length()).length() > Integer.parseInt(MAX_TWEET_CHARACTERS.getValue())) {
-            errorList.add("Invalid tweet length: " + tweetLine + ". Line skipped.");
+        if(!StringUtils.isEmpty(tweetLine) && tweetLine.substring((name + TWITTER_FEED_START.getValue() + " ").length()).length() > Integer.parseInt(MAX_TWEET_CHARACTERS.getValue())) {
+            errorList.add("Invalid tweet length: " + tweetLine + ". Max characters is " + MAX_TWEET_CHARACTERS.getValue() + " Line skipped.");
+            throw new IllegalArgumentException("Invalid tweet length: " + tweetLine + ". Max characters is " + MAX_TWEET_CHARACTERS.getValue() + ". Line skipped.");
         }
 
         validateAscii(tweetLine, errorList);
