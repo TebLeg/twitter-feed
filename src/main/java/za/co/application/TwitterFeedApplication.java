@@ -3,7 +3,6 @@ package za.co.application;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import za.co.application.twitterfeed.ArgumentsValidator;
 import za.co.application.twitterfeed.FeedService;
 
 @SpringBootApplication
