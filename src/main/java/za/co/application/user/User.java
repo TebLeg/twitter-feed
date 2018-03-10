@@ -1,5 +1,6 @@
 package za.co.application.user;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Set;
 public class User {
 
     private String name;
-    private Set<String> follows;
+    private Set<User> follows = new HashSet<>();
 
     public User(String name) {
         this.name = name;
@@ -19,14 +20,14 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public void setFollows(Set<String> follows) {
+    public void setFollows(Set<User> follows) {
         this.follows = follows;
     }
 
+    public Set<User> getFollows() {
+        return follows;
+    }
 
     /**
      * Custom implementation so that HashSet uses unique Users.
@@ -54,16 +55,12 @@ public class User {
     }
 
 
-    public Set<String> getFollows() {
-        return follows;
-    }
-
     @Override
     public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", follows=" + follows +
-                '}';
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", follows=").append(follows);
+        sb.append('}');
+        return sb.toString();
     }
-
 }
