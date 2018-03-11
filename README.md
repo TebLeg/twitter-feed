@@ -15,7 +15,9 @@ The following assumptions about the files are made:
 2. Lines of the tweet file contain a user, followed by greater than, space and then a tweet that may be at most 140 characters in length. 
 3. The tweets are considered to be posted by the each user in the order they are found in this file.
 The program needs to write console output as follows. For each user / follower (in alphabetical order) output their name on a line. Then for each tweet, emit a line with the following format: <tab>@user: <space>message.
-4. For the user.txt file if it is in the following format:
+4. When an empty user file is encountered the tweet file will not be processed. 
+5. The file name arguments must be in the order of "user.txt" and "tweet.txt", if the arguments are swopped then it is considered an error. 
+6. For the user.txt file if it is in the following format:
 
 ```
     Ward follows Alan
