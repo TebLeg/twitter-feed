@@ -54,12 +54,45 @@ public class TwitterFeedApplicationTests {
 	@Test
 	public void user_filename_does_not_exist_failure() throws Exception {
 
-		String[] args = new String[] {"files/user.txt", "files/tweet.txt"};
+		String[] args = new String[] {"nofiles/user.txt", "nofiles/tweet.txt"};
 
 		try {
 			new FeedService().execute(args);
 		} catch (IllegalArgumentException e) {
-			assertEquals(e.getMessage(), "File files/user.txt not found.");
+			assertEquals(e.getMessage(), "File nofiles/user.txt not found.");
+		}
+
+	}
+
+	@Test
+	public void user_and_tweet_files_empty() throws Exception {
+
+		ClassLoader classLoader = this.getClass().getClassLoader();
+		File file = new File(classLoader.getResource("emptyfiles/user.txt").getFile());
+		File tweetFile = new File(classLoader.getResource("emptyfiles/tweet.txt").getFile());
+
+		String[] args = new String[] {file.getAbsolutePath(), tweetFile.getAbsolutePath()};
+		FeedService service = new FeedService();
+		service.execute(args);
+
+		String expected = "Empty users file user.txt" + System.getProperty("line.separator");
+		assertEquals(expected, service.printErrorList());
+
+	}
+
+	@Test
+	public void user_and_tweet_filename_arguments_swapped() throws Exception {
+
+		ClassLoader classLoader = this.getClass().getClassLoader();
+		File file = new File(classLoader.getResource("emptyfiles/tweet.txt").getFile());
+		File tweetFile = new File(classLoader.getResource("emptyfiles/user.txt").getFile());
+
+		String[] args = new String[] {file.getAbsolutePath(), tweetFile.getAbsolutePath()};
+
+		try {
+			new FeedService().execute(args);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Invalid user file name: tweet.txt. It should be user.txt", e.getMessage());
 		}
 
 	}
@@ -70,7 +103,7 @@ public class TwitterFeedApplicationTests {
 		ClassLoader classLoader = this.getClass().getClassLoader();
 		File file = new File(classLoader.getResource("user.txt").getFile());
 
-		String[] args = new String[] {file.getAbsolutePath(), "files/tweet.txt"};
+		String[] args = new String[] {file.getAbsolutePath(), "nofiles/tweet.txt"};
 		FeedService service = new FeedService();
 		service.execute(args);
 

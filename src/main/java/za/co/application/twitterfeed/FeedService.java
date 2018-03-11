@@ -9,8 +9,8 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import static za.co.application.twitterfeed.FeedEnum.TWEET_FILE_NAME_ARG_INDEX;
-import static za.co.application.twitterfeed.FeedEnum.USER_FILE_NAME_ARG_INDEX;
+
+import static za.co.application.twitterfeed.FeedEnum.*;
 
 /**
  * Created by A100286 on 3/8/2018.
@@ -33,12 +33,17 @@ public class FeedService {
             List<User> userList = userController.execute(Paths.get(args[Integer.parseInt(USER_FILE_NAME_ARG_INDEX.getValue())]).toFile(),
                     errorList);
 
-            Path path = Paths.get(args[Integer.parseInt(TWEET_FILE_NAME_ARG_INDEX.getValue())]);
-            if(Files.exists(path)) {
-                TweetController tweetController = new TweetController();
-                tweetController.execute(Paths.get(args[Integer.parseInt(TWEET_FILE_NAME_ARG_INDEX.getValue())]).toFile(),
-                        userList, errorList);
+            if(!userList.isEmpty()) {
+                Path path = Paths.get(args[Integer.parseInt(TWEET_FILE_NAME_ARG_INDEX.getValue())]);
+                if(Files.exists(path)) {
+                    TweetController tweetController = new TweetController();
+                    tweetController.execute(Paths.get(args[Integer.parseInt(TWEET_FILE_NAME_ARG_INDEX.getValue())]).toFile(),
+                            userList, errorList);
+                }
+            } else {
+                errorList.add("Empty users file " + USER_FILE_NAME.getValue());
             }
+
         } finally {
             System.out.println("=============================================================================================");
             System.out.println("Warnings and Errors list:");
