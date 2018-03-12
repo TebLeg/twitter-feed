@@ -2,16 +2,16 @@ package za.co.application.tweet;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import za.co.application.twitterfeed.FeedService;
 import za.co.application.user.User;
-import za.co.application.user.UserComparator;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import static za.co.application.tweet.TweetEnum.TWITTER_FEED_COLON;
-import static za.co.application.tweet.TweetEnum.TWITTER_FEED_START;
-import static za.co.application.tweet.TweetEnum.TWITTER_FEED_USER_AT;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -19,6 +19,7 @@ import static za.co.application.tweet.TweetEnum.TWITTER_FEED_USER_AT;
  */
 public class TweetController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TweetController.class);
     /**
      * Executes the business logic by delegating.
      * @param tweetFile
@@ -41,13 +42,11 @@ public class TweetController {
      * @throws IOException
      */
     private void parseAndDisplayTwitterFeed(File tweetFile, List<User> userList, Set<String> errorList) throws IllegalArgumentException {
-        //Sort the user list in alphabetical order.
-        UserComparator comparator = new UserComparator();
-        Collections.sort(userList, comparator);
-        System.out.println("======================================= Twitter Feed ========================================");
+
+        LOGGER.info("======================================= Twitter Feed ========================================");
 
         for (User user : userList) {
-            System.out.println(user.getName());
+            LOGGER.info(user.getName());
 
             LineIterator it;
             try {
@@ -59,33 +58,16 @@ public class TweetController {
             try {
                 while (it.hasNext()) {
                     String line = it.nextLine();
-                    try {
-                        TweetValidator.validate(line, user.getName(), errorList);
-                        //Display the tweets of user
-                        if(line.startsWith(user.getName())) {
 
-                            if(line.substring(user.getName().length()).charAt(0) == TWITTER_FEED_START.getValue().charAt(0)) {
-                                System.out.println(TWITTER_FEED_USER_AT.getValue() +
-                                        line.replace(TWITTER_FEED_START.getValue(), TWITTER_FEED_COLON.getValue()));
-                            } else {
-                                errorList.add("Invalid tweet line pattern: " + line + ". Line skipped.");
-                            }
+                    CompletableFuture<Boolean> booleanCompletableFuture = FeedService.displayFeed(line, errorList, user);
+                    //Block and wait for it to complete, we want to wait for all the async tasks before we continue otherwise we have an incomplete twitter feed
+                    booleanCompletableFuture.get();
 
-                        }
-                        //Now display the tweets of the users that they follow
-                        user.getFollows().stream().filter(follows -> line.startsWith(follows.getName())).forEach(follows -> {
-
-                            if (line.substring(follows.getName().length()).charAt(0) == TWITTER_FEED_START.getValue().charAt(0)) {
-                                System.out.println(TWITTER_FEED_USER_AT.getValue() +
-                                        line.replace(TWITTER_FEED_START.getValue(), TWITTER_FEED_COLON.getValue()));
-                            } else {
-                                errorList.add("Invalid tweet line pattern: " + line + ". Line skipped.");
-                            }
-                        });
-                    } catch (IllegalArgumentException e) {
-                        continue;
-                    }
                 }
+            } catch (InterruptedException e) {
+                errorList.add("InterruptedException, thread interrupted - line skipped.");
+            } catch (ExecutionException e) {
+                errorList.add("ExecutionException, line skipped.");
             } finally {
                 LineIterator.closeQuietly(it);
             }

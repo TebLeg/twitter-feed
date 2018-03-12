@@ -2,17 +2,22 @@ package za.co.application.user;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import static za.co.application.user.UserEnum.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by A100286 on 3/8/2018.
  */
 public class UserController {
 
-    private Set<User> userHashSet = new HashSet<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private Set<User> userHashSet = ConcurrentHashMap.newKeySet();
 
     /**
      * Executes the business logic by delegating.
@@ -50,75 +55,28 @@ public class UserController {
                 throw new IllegalArgumentException("Directory or file does not exist");
             }
             while (it.hasNext()) {
-                line = it.nextLine();
-                try {
-                    UserValidator.validate(line, errorList);
-                    addUsersAndFollows(line);
 
-                } catch (IllegalArgumentException e) {
-                    //Just skip this line.
-                    continue;
-                }
+                line = it.nextLine();
+                CompletableFuture<Boolean> booleanCompletableFuture = UserService.addUsersAndFollows(line, errorList, userHashSet);
+                //Block and wait for it to complete, we want to wait for all the async tasks before we continue otherwise we have an incomplete twitter feed
+                booleanCompletableFuture.get();
             }
 
         }catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Illegal pattern in user line: " + line);
+            LOGGER.warn("Illegal pattern in user line: " + line);
+        } catch (InterruptedException e) {
+            errorList.add("InterruptedException, thread interrupted - line skipped.");
+        } catch (ExecutionException e) {
+            errorList.add("ExecutionException, line skipped.");
         } finally {
             LineIterator.closeQuietly(it);
         }
-        System.out.println("======================================= Twitter Users ========================================");
-        System.out.println(userHashSet);
-        return new ArrayList(userHashSet);
+        LOGGER.info("======================================= Twitter Users ========================================");
+        List<User> userList = new ArrayList(userHashSet);
+        //Sort the user list in alphabetical order.
+        UserComparator comparator = new UserComparator();
+        Collections.sort(userList, comparator);
+        LOGGER.info(userList.toString());
+        return userList;
     }
-
-    /**
-     * Adds as User objects the twitter names and the people they follow
-     * @param userLine
-     * @throws IllegalArgumentException
-     */
-    private void addUsersAndFollows(String userLine) throws IllegalArgumentException{
-        try {
-
-            //Loop and create unique set of users.
-            String[] tokens = userLine.split(USER_LINE_PATTERN.getValue());
-            String name = tokens[Integer.parseInt(USER_INDEX.getValue())].trim();
-
-            User parent = createUser(name);
-            Set<User> childrenSet = new HashSet<>();
-            String[] childrenArr = tokens[Integer.parseInt(FOLLOWED_USERS_INDEX.getValue())].split(FOLLOWED_USERS_REGEX.getValue());
-            //Create the User objects of the children and add them to the current object's children list.
-            for(String child : childrenArr) {
-                User childUser = createUser(child);
-
-                childrenSet.add(childUser);
-            }
-            parent.setFollows(childrenSet);
-
-        } catch (IllegalArgumentException e) {
-            //Do nothing
-        }
-    }
-
-    /**
-     * Creates a single unique user.
-     * @param name
-     * @return
-     */
-
-    private User createUser(String name) {
-        User user = new User(name.trim());
-        if(!userHashSet.contains(user)) {
-            userHashSet.add(user);
-        } else{
-            //Get the existing user in in order to add children
-            for(User tempUserObj : userHashSet) {
-                if(tempUserObj.equals(user)) {
-                    user = tempUserObj;
-                    break;
-                }
-            }
-        }
-        return user;
-    }
-
 }
