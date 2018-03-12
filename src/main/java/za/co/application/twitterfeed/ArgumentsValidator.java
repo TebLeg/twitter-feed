@@ -4,7 +4,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
-
 import static za.co.application.twitterfeed.FeedEnum.*;
 
 /**
@@ -25,8 +24,8 @@ public class ArgumentsValidator {
 
         Path path1 = Paths.get(args[Integer.parseInt(USER_FILE_NAME_ARG_INDEX.getValue())]);
         if(!Files.exists(path1)) {
-            errorList.add("File " + args[Integer.parseInt(USER_FILE_NAME_ARG_INDEX.getValue())] + " not found.");
-            throw new IllegalArgumentException("File " + args[0] + " not found.");
+            errorList.add("File " + path1.toFile().getName() + " not found.");
+            throw new IllegalArgumentException("File " + path1.toFile().getName() + " not found.");
         }
         String userFileName = path1.getFileName().toString();
 

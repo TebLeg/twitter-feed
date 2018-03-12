@@ -2,7 +2,6 @@ package za.co.application.user;
 
 import za.co.application.common.Validator;
 import java.util.Set;
-
 import static za.co.application.user.UserEnum.USER_LINE_PATTERN;
 
 /**
