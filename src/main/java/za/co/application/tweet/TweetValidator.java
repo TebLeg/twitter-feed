@@ -2,10 +2,7 @@ package za.co.application.tweet;
 
 import org.springframework.util.StringUtils;
 import za.co.application.common.Validator;
-
 import java.util.Set;
-import java.util.regex.Pattern;
-
 import static za.co.application.tweet.TweetEnum.MAX_TWEET_CHARACTERS;
 import static za.co.application.tweet.TweetEnum.TWITTER_FEED_START;
 
