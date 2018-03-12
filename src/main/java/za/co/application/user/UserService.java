@@ -3,19 +3,30 @@ package za.co.application.user;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+
 import static za.co.application.user.UserEnum.*;
 
 /**
  * Created by A100286 on 3/12/2018.
  */
-@Service
+
 public class UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
+    private String userLine;
+    private Set<String> errorList;
+    private Set<User> userHashSet;
+
+    public UserService(String userLine, Set<String> errorList, Set<User> userHashSet) {
+        this.userLine = userLine;
+        this.errorList = errorList;
+        this.userHashSet = userHashSet;
+    }
 
     /**
      * Adds as User objects the twitter names and the people they follow
@@ -53,7 +64,6 @@ public class UserService {
      * @param name
      * @return
      */
-
     private static User createUser(String name, Set<User> userHashSet) {
         User user = new User(name.trim());
         if(!userHashSet.contains(user)) {
@@ -69,5 +79,4 @@ public class UserService {
         }
         return user;
     }
-
 }

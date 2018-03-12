@@ -9,6 +9,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import za.co.application.twitterfeed.FeedService;
 import java.util.concurrent.Executor;
 
+
 @SpringBootApplication
 @EnableAsync
 public class TwitterFeedApplication implements CommandLineRunner {
@@ -24,13 +25,15 @@ public class TwitterFeedApplication implements CommandLineRunner {
 	}
 
 	@Bean
-	public Executor asyncExecutor() {
+	public Executor executorService() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(10);
+		executor.setCorePoolSize(5);
 		executor.setMaxPoolSize(10);
-		executor.setQueueCapacity(500);
+		executor.setQueueCapacity(100);
+		executor.setKeepAliveSeconds(10); //10s a pool that remains idle for long enough will not consume any resources
 		executor.setThreadNamePrefix("TwitterFeed-");
 		executor.initialize();
 		return executor;
 	}
+
 }
